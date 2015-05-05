@@ -66,6 +66,10 @@
 using System;
 using System.Collections.Generic;
 
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+
 namespace Voronoi2
 {
 	/// <summary>
@@ -120,8 +124,38 @@ namespace Voronoi2
         {
             return sites;
         }
-		
-		/**
+
+        public void SetSites(Site[] sites)
+        {
+            this.sites = sites;
+        }
+
+        public void SetSite(int i, Site site)
+        {
+            this.sites[i] = site;
+        }
+
+        public void Regionify()
+        {
+            for(int i = 0; i != sites.Length; i++)
+            {
+                sites[i].region = new List<Vector2>();
+                foreach(GraphEdge g in allEdges)
+                {
+                    if (g.site1 == i || g.site2 == i)
+                    {
+                        sites[i].AddRegion(g);
+                    }
+                }
+            }
+        }
+
+        public List<Vector2> GetRegion(int i)
+        {
+            return sites[i].region;
+        }
+
+        /**
 		 * 
 		 * @param xValuesIn Array of X values for each site.
 		 * @param yValuesIn Array of Y values for each site. Must be identical length to yValuesIn

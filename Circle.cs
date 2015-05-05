@@ -14,6 +14,7 @@ namespace Primitives2D
         public Vector2 center;
         public float radius;
         public int sides;
+        public Color color = Color.Red;
 
         public static int DEFAULT_SIDES = 10;
         public static float DEFAULT_RADIUS = 3;

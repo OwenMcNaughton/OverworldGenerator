@@ -11,8 +11,19 @@ namespace Voronoi2
 {
     public class PointGenerator
     {
-        static int NUM_LLOYD_RELAXATIONS = 2;
+        static int NUM_LLOYD_RELAXATIONS = 5;
         static double[] _xvalues, _yvalues;
+        static Voronoi voro;
+
+        public static double[] GetX()
+        {
+            return _xvalues;
+        }
+
+        public static double[] GetY()
+        {
+            return _yvalues;
+        }
 
         static public void GenerateRandom(int size, int seed, int numPoints)
         {
@@ -23,6 +34,9 @@ namespace Voronoi2
                 _xvalues[i] = gen.NextDouble() * (size-20) + 10;
                 _yvalues[i] = gen.NextDouble() * (size-20) + 10;
             }
+            voro = new Voronoi(10);
+            voro.generateVoronoi(_xvalues, _yvalues, 0, size, 0, size);
+            voro.Regionify();
         }
 
         static public void GenerateRandom(int size, int seed, int numPoints, double[] xvalues, double[] yvalues)
@@ -37,17 +51,52 @@ namespace Voronoi2
 
         static public void GenerateRelaxed(int size, int seed, int numPoints)
         {
-            Random gen = new Random();
-            GenerateRandom(size, gen.Next(), numPoints);
             for (int i = 0; i < NUM_LLOYD_RELAXATIONS; i++)
             {
-                Voronoi v = new Voronoi(10);
-                v.generateVoronoi(_xvalues, _yvalues, 0, size, 0, size);
+                Site[] sites = voro.GetSites();
 
+                for (int j = 0; j != sites.Length; j++)
+                {
+                    List<Vector2> region = voro.GetRegion(j);
+                    int count = 0;
+                    foreach (Vector2 v in region)
+                    {
+                        if (v.X > 0 || v.X < size || v.Y > 0 || v.Y < size)
+                        {
+                            _xvalues[j] += v.X;
+                            _yvalues[j] += v.Y;
+                            count++;
+                        }
+                    }
+                    _xvalues[j] /= count;
+                    _yvalues[j] /= count;
+                }
             }
-
-            //return points;
         }
     
+        static public void GeneratePeturbed(int size, int seed, int numPoints)
+        {
+            _xvalues = new double[numPoints];
+            _yvalues = new double[numPoints];
+            Random gen = new Random();
+
+            int sq = (int)Math.Sqrt(numPoints);
+            double spacing = size / sq;
+            int count = 0;
+            for (int i = 0; i != sq; i++)
+            {
+                for (int j = 0; j != sq; j++)
+                {
+                    _xvalues[i * sq + j] = (i * spacing + spacing / 2) + gen.Next(14) - 7;
+                    _yvalues[i * sq + j] = (j * spacing + spacing / 2) + gen.Next(14) - 7;
+                    count++;
+                }
+            }
+            while(count < numPoints)
+            {
+                _xvalues[count] = gen.Next(500);
+                _yvalues[count++] = gen.Next(500);
+            }
+        }
     }
 }

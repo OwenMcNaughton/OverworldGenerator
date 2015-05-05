@@ -53,6 +53,10 @@
 using System;
 using System.Collections.Generic;
 
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+
 namespace Voronoi2
 {
 	public class Point
@@ -77,11 +81,22 @@ namespace Voronoi2
 	{
 		public Point coord;
 		public int sitenbr;
+        public List<Vector2> region;
 		
 		public Site ()
 		{
 			coord = new Point(0, 0);
+            region = new List<Vector2>();
 		}
+
+        public void AddRegion(GraphEdge g)
+        {
+            Vector2 v1 = new Vector2((float)g.x1, (float)g.y1);
+            Vector2 v2 = new Vector2((float)g.x2, (float)g.y2);
+
+            region.Add(v1);
+            region.Add(v2);
+        }
 	}
 	
 	public class Edge

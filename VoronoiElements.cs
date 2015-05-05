@@ -80,7 +80,7 @@ namespace Voronoi2
 		
 		public Site ()
 		{
-			coord = new Point();
+			coord = new Point(0, 0);
 		}
 	}
 	

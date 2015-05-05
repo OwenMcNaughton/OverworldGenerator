@@ -8,6 +8,9 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
+using Voronoi2;
+using Primitives2D;
+
 namespace OverworldGenerator
 {
     public class Game1 : Game
@@ -15,23 +18,44 @@ namespace OverworldGenerator
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        Texture2D background;
-        PerlinMatrix mat;
-
-        int thresh;
-        double z, zadd, scale;
+        List<Line> lines;
+        List<Circle> circles;
+        int points = 100;
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
-            graphics.PreferredBackBufferWidth = 1000;
-            graphics.PreferredBackBufferHeight = 600;
+            graphics.PreferredBackBufferWidth = 500;
+            graphics.PreferredBackBufferHeight = 500;
             graphics.ApplyChanges();
             Content.RootDirectory = "Content";
-            thresh = 2;
-            z = 1.000;
-            zadd = 0.000;
-            scale = .03;
+
+            Random gen = new Random();
+
+            double[] xvalues = new double[points];
+            double[] yvalues = new double[points];
+
+            PointGenerator.GenerateRandom(500, gen.Next(), points, xvalues, yvalues);
+
+            Voronoi voro = new Voronoi(10);
+            voro.generateVoronoi(xvalues, yvalues, 0, 500, 0, 500);
+
+            List<GraphEdge> edges = voro.GetEdges();
+            lines = new List<Line>();
+            foreach(GraphEdge g in edges)
+            {
+                Vector2 v1 = new Vector2((float)g.x1, (float)g.y1);
+                Vector2 v2 = new Vector2((float)g.x2, (float)g.y2);
+                lines.Add(new Line(v1, v2));
+            }
+
+            Site[] sites = voro.GetSites();
+            circles = new List<Circle>();
+            foreach (Site s in sites)
+            {
+                Vector2 v = new Vector2((float)s.coord.x, (float)s.coord.y);
+                circles.Add(new Circle(v));
+            }
         }
 
         protected override void Initialize()
@@ -64,14 +88,18 @@ namespace OverworldGenerator
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            mat = Perlin.CreateOctave(500, 300, z, scale, 1, thresh);
-            z += zadd;
-            zadd = .05;
-
-            background = mat.GetImage(graphics.GraphicsDevice);
-
             spriteBatch.Begin();
-            spriteBatch.Draw(background, new Rectangle(0, 0, 1000, 600), Color.White);
+
+            foreach(Line l in lines) 
+            {
+                spriteBatch.DrawLine(l.point1, l.point2, Color.Aqua);
+            }
+
+            foreach (Circle c in circles)
+            {
+                spriteBatch.DrawCircle(c.center, c.radius, c.sides, Color.Red);
+            }
+
             spriteBatch.End();
 
             base.Draw(gameTime);

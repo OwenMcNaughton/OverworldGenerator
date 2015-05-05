@@ -110,6 +110,16 @@ namespace Voronoi2
 			allEdges = null;
 			this.minDistanceBetweenSites = minDistanceBetweenSites;
 		}
+
+        public List<GraphEdge> GetEdges()
+        {
+            return allEdges;
+        }
+
+        public Site[] GetSites()
+        {
+            return sites;
+        }
 		
 		/**
 		 * 

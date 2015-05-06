@@ -18,5 +18,10 @@ namespace Primitives2D
             this.point1 = point1;
             this.point2 = point2;
         }
+
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            spriteBatch.DrawLine(point1, point2, Color.White, 2);
+        }
     }
 }

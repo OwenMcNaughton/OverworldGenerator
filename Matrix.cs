@@ -27,7 +27,6 @@ namespace OverworldGenerator
 
         private int Index(int x, int y)
         {
-            int arse = y * cols + x;
             return y * cols + x;
         }
 

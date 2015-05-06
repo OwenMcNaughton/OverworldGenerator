@@ -74,6 +74,11 @@ namespace Voronoi2
 			this.x = x;
 			this.y = y;
 		}
+
+        public double Length()
+        {
+            return Math.Sqrt(x * x + y * y);
+        }
 	}
 	
 	// use for sites and vertecies
@@ -82,11 +87,13 @@ namespace Voronoi2
 		public Point coord;
 		public int sitenbr;
         public List<Vector2> region;
+        public Boolean water;
 		
 		public Site ()
 		{
 			coord = new Point(0, 0);
             region = new List<Vector2>();
+            water = true;
 		}
 
         public void AddRegion(GraphEdge g)

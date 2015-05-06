@@ -24,3 +24,4 @@ c:\users\owen\documents\visual studio 2013\Projects\OverworldGenerator\Overworld
 c:\users\owen\documents\visual studio 2013\Projects\OverworldGenerator\OverworldGenerator\obj\x86\Debug\OverworldGenerator.pdb
 C:\Users\Owen\Documents\Visual Studio 2013\Projects\OverworldGenerator\OverworldGenerator\bin\Windows\Debug\Content\1image.xnb
 C:\Users\Owen\Documents\Visual Studio 2013\Projects\OverworldGenerator\OverworldGenerator\obj\x86\Debug\OverworldGenerator.csprojResolveAssemblyReference.cache
+C:\Users\Owen\Documents\Visual Studio 2013\Projects\OverworldGenerator\OverworldGenerator\bin\Windows\Debug\OverworldGenerator.exe.config

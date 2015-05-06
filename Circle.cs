@@ -74,5 +74,10 @@ namespace Primitives2D
             this.radius = DEFAULT_RADIUS;
             this.sides = DEFAULT_SIDES;
         }
+
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            spriteBatch.DrawCircle(center, radius, sides, color, 1);
+        }
     }
 }
